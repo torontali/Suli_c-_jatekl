@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "Sulis_console_jatek/1.0.0": {
+        "runtime": {
+          "Sulis_console_jatek.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Sulis_console_jatek/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

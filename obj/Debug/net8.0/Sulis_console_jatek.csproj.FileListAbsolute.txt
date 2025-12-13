@@ -1,0 +1,14 @@
+C:\programozás\c#\Sulis_console_jatek\Sulis_console_jatek\bin\Debug\net8.0\Sulis_console_jatek.exe
+C:\programozás\c#\Sulis_console_jatek\Sulis_console_jatek\bin\Debug\net8.0\Sulis_console_jatek.deps.json
+C:\programozás\c#\Sulis_console_jatek\Sulis_console_jatek\bin\Debug\net8.0\Sulis_console_jatek.runtimeconfig.json
+C:\programozás\c#\Sulis_console_jatek\Sulis_console_jatek\bin\Debug\net8.0\Sulis_console_jatek.dll
+C:\programozás\c#\Sulis_console_jatek\Sulis_console_jatek\bin\Debug\net8.0\Sulis_console_jatek.pdb
+C:\programozás\c#\Sulis_console_jatek\Sulis_console_jatek\obj\Debug\net8.0\Sulis_console_jatek.GeneratedMSBuildEditorConfig.editorconfig
+C:\programozás\c#\Sulis_console_jatek\Sulis_console_jatek\obj\Debug\net8.0\Sulis_console_jatek.AssemblyInfoInputs.cache
+C:\programozás\c#\Sulis_console_jatek\Sulis_console_jatek\obj\Debug\net8.0\Sulis_console_jatek.AssemblyInfo.cs
+C:\programozás\c#\Sulis_console_jatek\Sulis_console_jatek\obj\Debug\net8.0\Sulis_console_jatek.csproj.CoreCompileInputs.cache
+C:\programozás\c#\Sulis_console_jatek\Sulis_console_jatek\obj\Debug\net8.0\Sulis_console_jatek.dll
+C:\programozás\c#\Sulis_console_jatek\Sulis_console_jatek\obj\Debug\net8.0\refint\Sulis_console_jatek.dll
+C:\programozás\c#\Sulis_console_jatek\Sulis_console_jatek\obj\Debug\net8.0\Sulis_console_jatek.pdb
+C:\programozás\c#\Sulis_console_jatek\Sulis_console_jatek\obj\Debug\net8.0\Sulis_console_jatek.genruntimeconfig.cache
+C:\programozás\c#\Sulis_console_jatek\Sulis_console_jatek\obj\Debug\net8.0\ref\Sulis_console_jatek.dll
