@@ -12,3 +12,4 @@ C:\programozás\c#\Sulis_console_jatek\Sulis_console_jatek\obj\Debug\net8.0\refi
 C:\programozás\c#\Sulis_console_jatek\Sulis_console_jatek\obj\Debug\net8.0\Sulis_console_jatek.pdb
 C:\programozás\c#\Sulis_console_jatek\Sulis_console_jatek\obj\Debug\net8.0\Sulis_console_jatek.genruntimeconfig.cache
 C:\programozás\c#\Sulis_console_jatek\Sulis_console_jatek\obj\Debug\net8.0\ref\Sulis_console_jatek.dll
+C:\programozás\c#\Sulis_console_jatek\Sulis_console_jatek\obj\Debug\net8.0\Sulis_console_jatek.sourcelink.json

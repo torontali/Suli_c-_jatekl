@@ -7,8 +7,10 @@ namespace Sulis_console_jatek
         public string character;
         public int health;
         public List<string> inventory = new List<string>();
-        public string item_in_right_hand;
-        public string item_in_left_hand;
+        public Dictionary<string, int> item_in_right_hand = new Dictionary<string, int>();
+        public Dictionary<string, int> item_in_left_hand = new Dictionary<string, int>();
+        public int gold = 20;
+
 
         public string[] character_types()
         {
@@ -30,23 +32,24 @@ namespace Sulis_console_jatek
                     this.health = 100;
                     this.inventory.Add("Kard");
                     this.inventory.Add("Pajzs");
-                    this.item_in_left_hand = "Pajzs";
-                    this.item_in_right_hand = "Kard";
+                    this.item_in_left_hand.Add("Pajzs", 20);
+                    this.item_in_right_hand.Add("Kard", 30) ;
                     break;
                 case "Varázsló":
                     this.character = "Varázsló";
                     this.health = 70;
                     this.inventory.Add("Varázspálca");
                     this.inventory.Add("Könyv");
-                    this.item_in_left_hand = "Könyv";
-                    this.item_in_right_hand = "Varázspálca";
+                    this.item_in_left_hand.Add("Könyv", 20);
+                    this.item_in_right_hand.Add("Varázspálca", 40);
                     break;
                 case "Béka":
                     this.character = "Béka";
                     this.health = 50;
                     this.inventory.Add("Nyelv");
                     this.inventory.Add("Béka_páncél");
-                    this.item_in_right_hand = "Nyelv";
+                    this.item_in_right_hand.Add("Nyelv", 70);
+                    this.item_in_left_hand.Add("Béka_páncél", 10);
                     break;
                 default:
                     Console.WriteLine("Érvénytelen karakter típus.");

@@ -10,14 +10,17 @@ namespace Sulis_console_jatek
         {
             Controller controller = new Controller();
             controller.Give_player_output("A játék elkezdődőtt. Add meg a neved: ");
-            controller.Process_player_input();
+            controller.game_control();
         }
 
 
         private Character player_character = new Character();
+        Bolt bolt = new Bolt();
 
-        public void Process_player_input() { 
+        public void game_control()
+        {
             this.Name_and_charachter_selection();
+            this.Start_game();
         }
 
         public void Give_player_output(string msg)
@@ -50,10 +53,20 @@ namespace Sulis_console_jatek
 
             player_character.set_charatecter(name, Charater_type);
             // Use the correct method name and return type
-                
+
         }
 
+        private void Start_game()
+        {
+            Give_player_output($"Gratulálok: {player_character.name} Ezt a karakterrt választottad: {player_character.character} ");
+            Give_player_output($"Tárgyaid : {player_character.inventory}");
+            Give_player_output($"A játék eleéj vagy itt mindig egy bolta fogsz kezdeni.");
+            Give_player_output($"jelenleg enyi pénezd van amit eltudsz költeni a boltba: {player_character.gold}");
+            Give_player_output($" A boltb most ezeket kínálja fel neked: {bolt.get_bolt_random_items()} ");
 
+
+
+        }
     }
 }
 
