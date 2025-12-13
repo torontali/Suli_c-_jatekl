@@ -12,6 +12,17 @@ namespace Sulis_console_jatek
         public int gold = 20;
 
 
+        public string get_invetory() { 
+            
+            string invetory_items = "";
+            foreach (string item in this.inventory)
+            {
+                invetory_items += item + ", ";
+            }
+            return invetory_items;
+        }
+
+
         public string[] character_types()
         {
             return new string[] { "Katona", "Varázsló", "Béka" };

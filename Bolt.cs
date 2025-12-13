@@ -9,8 +9,16 @@ namespace Sulis_console_jatek
 {
     class Bolt
     {
+
         Random rnd = new Random();
-        private bool elso_bolt = true;
+        private int elso_bolt = 1;
+
+        public Bolt(int bolt_tipus)
+        {
+           this.elso_bolt = bolt_tipus;
+        }
+
+
 
 
         private Dictionary<string, int> bolt_random_items = new Dictionary<string, int>();
@@ -124,9 +132,14 @@ namespace Sulis_console_jatek
 
         public Dictionary<string, int> get_bolt_random_items()
         {
-            if (elso_bolt == true) { 
+            foreach (var item in this.bolt_random_items)
+            {
+                this.bolt_random_items.Remove(item.Key);
+            }
+
+
+            if (elso_bolt == 1) { 
                 this.elso_bolt_random_item_generator();
-                elso_bolt = false;
             } else
             {
                 this.bolt_random_item_generator();
