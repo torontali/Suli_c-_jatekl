@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Sulis_console_jatek")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9cafc63868e1072db393cd9c435f785d6aff3b89")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7ef06056c0781f2507c4ffd33a5365e30cb216a0")]
 [assembly: System.Reflection.AssemblyProductAttribute("Sulis_console_jatek")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Sulis_console_jatek")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

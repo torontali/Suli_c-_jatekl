@@ -17,7 +17,7 @@ namespace Sulis_console_jatek
 
 
         private Character player_character = new Character();
-        
+
 
         public void game_control()
         {
@@ -95,7 +95,18 @@ namespace Sulis_console_jatek
                 if (player_character.gold >= item_price)
                 {
                     player_character.gold -= item_price;
-                    player_character.inventory.Add(input);
+
+                    foreach (var item in bolt_items)
+                    {
+                        if (item.Key == input)
+                        {
+                            player_character.inventory.Add(item.Key, item.Value);
+                            break;
+                        }
+                    }
+
+
+
                     Give_player_output(player_character.get_invetory());
                     Give_player_output($"Sikeresen megvetted a {input}-t. Maradt pénzed: {player_character.gold}");
 
@@ -181,20 +192,47 @@ namespace Sulis_console_jatek
                     break;
             }
 
-            game_event.Random_event(player_character.health);
+            game_event.Random_event(player_character);
+            Still_alive_check();
+
+        }
+
+
+            private void Still_alive_check() {
 
             if (player_character.health == 0)
             {
+                Give_player_output("");
+                Give_player_output("");
                 Give_player_output("Meghaltál játéknak vége.");
-                return;
+
+                Give_player_output("");
+                Give_player_output("");
+                Give_player_output("Szeretnéd ujjra kezdeni ? (igen/ nem)");
+
+                string input2 = this.Get_player_input();
+            
+                if (input2 == "igen"){
+                    Controller controller = new Controller();
+                    controller.Give_player_output("A játék elkezdődőtt. Add meg a neved: ");
+                    controller.game_control();
+                }
+                else {
+                    return;
+                }
+     
             }
+
+            
 
             Give_player_output("Folytatod az utad? (igen/nem)");
             string input = this.Get_player_input();
 
             if (input == "igen")
             {
-                    this.Game_progession();
+                Give_player_output("");
+                Give_player_output("");
+                this.Game_progession();
             }
             else {
                 Give_player_output("Majd legközelebb tovább jutsz!");

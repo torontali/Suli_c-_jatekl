@@ -122,8 +122,16 @@ namespace Sulis_console_jatek
             while (this.bolt_random_items.Count < 5)
             {
                 var item = items.ElementAt(rnd.Next(1,items.Count));
+                foreach (var ne_legyen_2_ugyan__olyan_item in this.bolt_random_items)
+                {
+                    if (ne_legyen_2_ugyan__olyan_item.Key == item.Key)
+                    {
+                        item = items.ElementAt(rnd.Next(1, items.Count));
+                    }
+                }
+
                 this.bolt_random_items.Add(item.Key, item.Value);
-                
+
                 i++;
             }
 
