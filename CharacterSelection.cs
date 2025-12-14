@@ -10,6 +10,8 @@ namespace Sulis_console_jatek
         public Dictionary<string, int> item_in_right_hand = new Dictionary<string, int>();
         public Dictionary<string, int> item_in_left_hand = new Dictionary<string, int>();
         public int gold = 20;
+        public int xp = 0;
+        public int lvl = 1;
 
 
         public string get_invetory() {

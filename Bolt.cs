@@ -15,7 +15,7 @@ namespace Sulis_console_jatek
 
         public Bolt(int bolt_tipus)
         {
-           this.elso_bolt = bolt_tipus;
+            this.elso_bolt = bolt_tipus;
         }
 
 
@@ -56,7 +56,7 @@ namespace Sulis_console_jatek
             { "Időpenge", 80 },
             { "Istenölő kard", 100 },
 
-             { "Kopott ruházat", 2 },
+            { "Kopott ruházat", 2 },
             { "Bőr mellvért", 4 },
             { "Vadász köpeny", 5 },
             { "Bőrpáncél", 7 },
@@ -86,75 +86,158 @@ namespace Sulis_console_jatek
             { "Halhatatlan páncél", 80 },
             { "Legenda páncél", 90 },
             { "Ősi király páncélja", 100 },
-            { "Istenpáncél", 120 }
+            { "Istenpáncél", 120 },
+
+            { "Csontkés", 8 },
+            { "Obszidián tőr", 28 },
+            { "Runás kard", 48 },
+            { "Sárkánylándzsa", 68 },
+            { "Titánbárd", 85 },
+            { "Ősi varázspálca", 58 },
+            { "Káosz kasza", 95 },
+            { "Pusztító buzogány", 88 },
+            { "Végzet dárda", 110 },
+
+            { "Rituális köpeny", 22 },
+            { "Runás mellvért", 38 },
+            { "Obszidián páncél", 58 },
+            { "Titán páncél", 72 },
+            { "Káosz páncél", 85 },
+            { "Sárkánykirály páncélja", 110 },
+            { "Ősi isten vértje", 130 },
+            { "Végzet páncél", 150 }
         };
 
         private void elso_bolt_random_item_generator()
         {
+            
+            bolt_random_items.Clear();
 
-            int i = 0;
+           
+            var eligible = items.Where(kv => kv.Value < 21).ToList();
+            var selected = eligible.OrderBy(_ => rnd.Next()).Take(Math.Min(5, eligible.Count));
 
-            while (this.bolt_random_items.Count < 5 )
+            foreach (var kv in selected)
             {
-                var item = items.ElementAt(rnd.Next(1,items.Count));
-
-                if (item.Value < 21) {
-                    foreach (var ne_legyen_2_ugyan__olyan_item in this.bolt_random_items)
-                    {
-                        if (ne_legyen_2_ugyan__olyan_item.Key == item.Key)
-                        {
-                            item = items.ElementAt(rnd.Next(1, items.Count));
-                        }
-                    }
-
-                    this.bolt_random_items.Add(item.Key, item.Value);
-                }
-                i++;
+                
+                bolt_random_items[kv.Key] = kv.Value;
             }
-
-
         }
 
         private void bolt_random_item_generator()
         {
-            int i = 0;
+            
+            bolt_random_items.Clear();
 
-            while (this.bolt_random_items.Count < 5)
+            var all = items.ToList();
+            var selected = all.OrderBy(_ => rnd.Next()).Take(Math.Min(5, all.Count));
+
+            foreach (var kv in selected)
             {
-                var item = items.ElementAt(rnd.Next(1,items.Count));
-                foreach (var ne_legyen_2_ugyan__olyan_item in this.bolt_random_items)
-                {
-                    if (ne_legyen_2_ugyan__olyan_item.Key == item.Key)
-                    {
-                        item = items.ElementAt(rnd.Next(1, items.Count));
-                    }
-                }
-
-                this.bolt_random_items.Add(item.Key, item.Value);
-
-                i++;
+                bolt_random_items[kv.Key] = kv.Value;
             }
-
         }
-
 
         public Dictionary<string, int> get_bolt_random_items()
         {
-            foreach (var item in this.bolt_random_items)
+            
+            bolt_random_items.Clear();
+
+            if (elso_bolt == 1)
             {
-                this.bolt_random_items.Remove(item.Key);
-            }
-
-
-            if (elso_bolt == 1) { 
                 this.elso_bolt_random_item_generator();
-            } else
+                
+                elso_bolt = 0;
+            }
+            else
             {
                 this.bolt_random_item_generator();
             }
 
             return this.bolt_random_items;
         }
+
+
+
+        public void use_bolt_transaction(Dictionary<string, int> bolt_items , Character player_character)
+        {
+            bolt_transaction(bolt_items, player_character);
+        }
+        private void bolt_transaction(Dictionary<string, int> bolt_items, Character player_character)
+        {
+            Console.WriteLine("(ha nem akarsz semmit anyít írj egyiket sem ) Mit szeretnél venni a boltból? Add meg a tárgy nevét:");
+            Console.WriteLine("");
+            string input = Console.ReadLine();
+
+            if (input == "nem" || input == "egyiket sem"){
+                Console.WriteLine("Nem vettél semmit");
+                return;
+            }
+
+
+            if (bolt_items.ContainsKey(input) == true)
+            {
+                int item_price = 10;
+                if (bolt_items[input] > 20 && bolt_items[input] < 50)
+                {
+                    item_price = 30;
+                }
+                else if (bolt_items[input] > 50 && bolt_items[input] < 90)
+                {
+                    item_price = 70;
+                }
+                else if (bolt_items[input] > 90 && bolt_items[input] < 110)
+                {
+                    item_price = 160;
+                }
+
+
+                if (player_character.gold >= item_price)
+                {
+                    player_character.gold -= item_price;
+
+                    foreach (var item in bolt_items)
+                    {
+                        if (item.Key == input)
+                        {
+                            player_character.inventory.Add(item.Key, item.Value);
+                            break;
+                        }
+                    }
+
+
+                    Console.WriteLine(player_character.get_invetory());
+                    Console.WriteLine($"Sikeresen megvetted a {input}-t. Maradt pénzed: {player_character.gold}");
+
+
+                    if (player_character.gold != 0)
+                    {
+                        Console.WriteLine($"Szeretnél még vásárolni? (igen/nem)");
+                        input = Console.ReadLine();
+
+                        if (input == "igen")
+                        {
+                            bolt_transaction(bolt_items, player_character);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Köszönöm a vásárlást!");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Nincs elég pénzed ehhez a tárgyhoz.");
+                    }
+                }
+
+            }
+            else {
+                Console.WriteLine("Ez a tárgy nem elérhető a boltban.");
+                bolt_transaction(bolt_items, player_character);
+            }
+        }
+
+
 
 
 

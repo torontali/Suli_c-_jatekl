@@ -9,10 +9,16 @@ namespace Sulis_console_jatek
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("██████╗ ██████╗  █████╗  ██████╗  ██████╗ ███╗   ██╗\r\n██╔══██╗██╔══██╗██╔══██╗██╔════╝ ██╔═══██╗████╗  ██║\r\n██║  ██║██████╔╝███████║██║  ███╗██║   ██║██╔██╗ ██║\r\n██║  ██║██╔══██╗██╔══██║██║   ██║██║   ██║██║╚██╗██║\r\n██████╔╝██║  ██║██║  ██║╚██████╔╝╚██████╔╝██║ ╚████║\r\n╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═══╝\r\n                         SLAYER");
+            Console.WriteLine("             __====-_  _-====___\r\n         _--^^^#####//      \\\\#####^^^--_\r\n      _-^##########// (    ) \\\\##########^-_\r\n     -############//  |\\^^/|  \\\\############-\r\n   _/############//   (@::@)   \\\\############\\_\r\n  /#############((     \\\\//     ))#############\\\r\n -###############\\\\    (oo)    //###############-\r\n-#################\\\\  / \"\" \\  //#################-\r\n_#/|##########/\\######(   \"   )######/\\##########|\\#_\r\n |/ |#/\\#/\\#/\\/  \\#/\\##\\  !  /##/\\#/  \\/\\#/\\#/\\#| \\|\r\n '  |/  V  V '   V  \\\\#\\  !  /#/  V   '  V  V  \\|  '\r\n    '   '  '      '   / |  !  | \\   '      '  '   '\r\n                     (  |  !  |  )\r\n                    __\\ |  !  | /__\r\n                   (vvv(VVV)(VVV)vvv)");
+            Console.WriteLine("");
+            Console.WriteLine("");
             Controller controller = new Controller();
             controller.Give_player_output("A játék elkezdődőtt. Add meg a neved: ");
             controller.game_control();
 
+
+            
         }
 
 
@@ -58,83 +64,7 @@ namespace Sulis_console_jatek
 
         }
 
-        public void use_bolt_transaction(Dictionary<string, int> bolt_items)
-        {
-            bolt_transaction(bolt_items);
-        }
-        private void bolt_transaction(Dictionary<string, int> bolt_items)
-        {
-            Give_player_output("(ha nem akarsz semmit anyít írj egyiket sem ) Mit szeretnél venni a boltból? Add meg a tárgy nevét:");
-            string input = this.Get_player_input();
-
-            if (input == "egyiket sem")
-            {
-                Give_player_output("Nem vásároltál semmit.");
-                return;
-            }
-
-
-
-            if (bolt_items.ContainsKey(input))
-            {
-                int item_price = 10;
-                if (bolt_items[input] > 20)
-                {
-                    item_price = 30;
-                }
-                else if (bolt_items[input] > 50)
-                {
-                    item_price = 70;
-                }
-                else if (bolt_items[input] > 90)
-                {
-                    item_price = 160;
-                }
-
-
-                if (player_character.gold >= item_price)
-                {
-                    player_character.gold -= item_price;
-
-                    foreach (var item in bolt_items)
-                    {
-                        if (item.Key == input)
-                        {
-                            player_character.inventory.Add(item.Key, item.Value);
-                            break;
-                        }
-                    }
-
-
-
-                    Give_player_output(player_character.get_invetory());
-                    Give_player_output($"Sikeresen megvetted a {input}-t. Maradt pénzed: {player_character.gold}");
-
-                    if (player_character.gold != 0)
-                    {
-                        Give_player_output($"Szeretnél még vásárolni? (igen/nem)");
-                        input = this.Get_player_input();
-
-                        if (input == "igen")
-                        {
-                            bolt_transaction(bolt_items);
-                        }
-                        else
-                        {
-                            Give_player_output("Köszönöm a vásárlást!");
-                        }
-                    }
-                    else
-                    {
-                        Give_player_output("Nincs elég pénzed ehhez a tárgyhoz.");
-                    }
-                }
-                else
-                {
-                    Give_player_output("Ez a tárgy nem elérhető a boltban.");
-                }
-            }
-        }
+       
 
 
         private void Start_game()
@@ -156,7 +86,7 @@ namespace Sulis_console_jatek
             {
                 Give_player_output($"{item.Key} - Védelem: {item.Value}");
             }
-            bolt_transaction(bolt_items);
+            bolt.use_bolt_transaction(bolt_items,player_character);
         }
 
 
@@ -193,15 +123,19 @@ namespace Sulis_console_jatek
             }
 
             game_event.Random_event(player_character);
-            Still_alive_check();
 
+            Still_alive_check();
         }
 
+        public void get_still_alive_check() {
+             Still_alive_check();
+        }
 
-            private void Still_alive_check() {
+        private void Still_alive_check() {
 
-            if (player_character.health == 0)
+            if (player_character.health <= 0)
             {
+
                 Give_player_output("");
                 Give_player_output("");
                 Give_player_output("Meghaltál játéknak vége.");
@@ -209,7 +143,6 @@ namespace Sulis_console_jatek
                 Give_player_output("");
                 Give_player_output("");
                 Give_player_output("Szeretnéd ujjra kezdeni ? (igen/ nem)");
-
                 string input2 = this.Get_player_input();
             
                 if (input2 == "igen"){
@@ -218,13 +151,13 @@ namespace Sulis_console_jatek
                     controller.game_control();
                 }
                 else {
-                    return;
+                    Environment.Exit(0);
                 }
      
             }
 
-            
 
+            
             Give_player_output("Folytatod az utad? (igen/nem)");
             string input = this.Get_player_input();
 
@@ -234,8 +167,9 @@ namespace Sulis_console_jatek
                 Give_player_output("");
                 this.Game_progession();
             }
-            else {
+            else if(input == "nem") {
                 Give_player_output("Majd legközelebb tovább jutsz!");
+                Environment.Exit(0);
             }
         }
     }

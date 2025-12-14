@@ -6,53 +6,59 @@ namespace Sulis_console_jatek
     class Event
     {
         Random rnd = new Random();
-       
 
-        public void Random_event(Character player_character) {
 
-            int random_number = rnd.Next(1, 4);
+        public void Random_event(Character player_character)
+        {
 
-            switch (random_number) { 
-            
-                case 1 :
-                    this.Might_run(player_character);
-                    break;
+            int random_number = rnd.Next(1, 171);
 
-                case 2:
-                    this.Bolt_event();
-                    break;
 
-                case 3:
-                    this.Randomm_Treasure();
-                    break;
+            if (random_number > 0 && random_number < 100)
+            {
+                this.Might_run(player_character);
+            }
+            else if (random_number >= 100 && random_number < 150)
+            {
+                this.Bolt_event(player_character);
+            }
+            else
+            {
+                this.Randomm_Treasure(player_character);
             }
 
         }
 
         private void Might_run(Character player_character)
         {
-
-            Enemy enemy = new Enemy();
-            enemy.set_monster();
-            Console.WriteLine( $" Egy {enemy.monsterName} áll veled szemben");
+            Console.Clear();
+            Enemy enemy = new Enemy(player_character.lvl);
+            Console.WriteLine($"Egy {enemy.monsterName} áll veled szemben");
+            Console.WriteLine($"Hp: {enemy.health}");
+            Console.WriteLine($"Damage: {enemy.enemy_left_hand()}");
+            Console.WriteLine($"Protection: {enemy.enemy_right_hand()}");
+            Console.WriteLine("");
             Console.WriteLine("elfutsz vagy harcolsz ? (harc/futas)");
             string input = Console.ReadLine();
 
-            switch (input) { 
-            
+            switch (input)
+            {
+
                 case "futas":
-                    int senity = rnd.Next(1,3);
-                    if (senity == 1) {
+                    int senity = rnd.Next(1, 3);
+                    if (senity == 1)
+                    {
                         player_character.health -= 10;
                         Console.WriteLine("Amiért ilyen gyáva vagy -10hp");
                     }
-                    else {
+                    else
+                    {
                         Console.WriteLine("elfutottál");
                     }
                     break;
 
                 case "harc":
-                    this.Fight(enemy, player_character); 
+                    this.Fight(enemy, player_character);
                     break;
 
             }
@@ -61,6 +67,8 @@ namespace Sulis_console_jatek
 
         private void Fight(Enemy enemy, Character player_character)
         {
+            Controller controller = new Controller();
+
             this.item_change_in_hand(enemy, player_character);
 
             int enemy_attack = enemy.item_in_right_hand.Values.Sum();
@@ -85,44 +93,145 @@ namespace Sulis_console_jatek
                 does_the_attack_hit(0, enemy, player_character);
             }
 
+            bool win = true;
 
             while (enemy.health > 0 && player_character.health > 0)
             {
+                Console.WriteLine("__________________________________________");
                 Console.WriteLine("Megtámadtad a szörnyet");
                 does_the_attack_hit(1, enemy, player_character);
                 if (enemy.health <= 0)
                 {
                     Console.WriteLine("Legyőzted a szörnyet");
+                    Console.WriteLine($"Megkatad a nála lévő goldot: {enemy.gold}");
+                    Console.WriteLine("kaptál 20xp");
+                    Console.WriteLine("kaptál +15hp");
                     break;
                 }
 
+                Console.WriteLine("__________________________________________");
                 Console.WriteLine("A szörny megtámadott");
                 does_the_attack_hit(0, enemy, player_character);
                 if (player_character.health <= 0)
                 {
-                    Console.WriteLine("Meghaltál");
+                    win = false;
                     break;
                 }
 
             }
+
+            if (win)
+            {
+
+                int random_drop = who_starts_first();
+
+                if (random_drop == 1)
+                {
+                    Console.WriteLine($"A szörny dobott neked egy tárgyat: {enemy.enemy_left_hand()}");
+                    Console.WriteLine("Elviszed magaddal vagy ott hagyod ? (elviszem/ hagyom)");
+                    string input = Console.ReadLine();
+
+                    if (input == "elviszem")
+                    {
+                        foreach (var item in enemy.item_in_right_hand)
+                        {
+                            player_character.inventory.Add(item.Key, item.Value);
+                        }
+                    }
+
+                    Console.WriteLine($"{player_character.inventory}");
+
+                }
+                else if (random_drop == 2 && enemy.enemy_right_hand() != "")
+                {
+                    Console.WriteLine($"A szörny dobott neked egy tárgyat: {enemy.enemy_right_hand()}");
+                    Console.WriteLine("Elviszed magaddal vagy ott hagyod ? (elviszem/ hagyom)");
+                    string input = Console.ReadLine();
+
+                    if (input == "elviszem")
+                    {
+                        foreach (var item in enemy.item_in_left_hand)
+                        {
+                            player_character.inventory.Add(item.Key, item.Value);
+                        }
+                    }
+
+                    Console.WriteLine($"{player_character.get_invetory()}");
+
+                }
+                else
+                {
+                    Console.WriteLine("A szörny nem dobott semmit");
+                }
+
+
+                this.player_revawrd_and_lvl_up(enemy, player_character);
+
+
+            }
+            else
+            {
+                controller.get_still_alive_check();
+            }
+
         }
 
 
-        private void does_the_attack_hit(int monster_or_player , Enemy enemy, Character player_character) {
+        private void player_revawrd_and_lvl_up(Enemy enemy, Character player_character)
+        {
+
+            player_character.gold += enemy.gold;
+            player_character.xp += 20;
+            player_character.health += 15;
+
+            if (player_character.xp >= 40)
+            {
+                player_character.lvl += 1;
+                player_character.xp = 0;
+                player_character.health += 20;
+
+                Console.Clear();
+                Console.WriteLine("__________________________________________");
+                Console.WriteLine("Gratulálok szintet léptél");
+                Console.WriteLine("");
+                Console.WriteLine("Jelenlegi statok:");
+                Console.WriteLine("");
+
+
+                Console.WriteLine($"+20 hp: {player_character.health}");
+                Console.WriteLine($" jelenlegi pénzed: {player_character.gold}");
+                Console.WriteLine($"Mostantól a szinted: {player_character.lvl}");
+                Console.WriteLine($"inventory {player_character.get_invetory()}");
+
+                Console.WriteLine("__________________________________________");
+            }
+
+
+        }
+
+
+        private void does_the_attack_hit(int monster_or_player, Enemy enemy, Character player_character)
+        {
+            Console.Clear();
             int chance = rnd.Next(1, 1000);
 
             if (chance > 500)
             {
-                switch (monster_or_player) { 
                 
+                switch (monster_or_player)
+                {
+
                     case 0:
+                        Console.Clear();
+                        Console.WriteLine("__________________________________________");
                         Console.WriteLine("");
                         Console.WriteLine("A szörny eltalált ");
                         Console.WriteLine("");
+                        Console.WriteLine("__________________________________________");
 
                         //valamiért csak így vesz el a hp-ból
                         // calculate attack and defense
-                        int enemyAttack = enemy.item_in_right_hand.Values.Sum();
+                        int enemyAttack = enemy.item_in_left_hand.Values.Sum();
                         int playerDefense = player_character.item_in_left_hand.Values.Sum();
 
                         // damage cannot be negative (no healing when defense > attack)
@@ -133,20 +242,27 @@ namespace Sulis_console_jatek
 
                         if (player_character.health <= 0)
                         {
+
                             return;
                         }
-                        else {
+                        else
+                        {
+                           
                             Console.WriteLine($"Enyi hp-d maradt: {player_character.health}");
+                            Console.WriteLine("__________________________________________");
                         }
 
-                            
-                       
+
+                        Thread.Sleep(2000);
                         break;
 
                     case 1:
+                        Console.Clear();
+                        Console.WriteLine("__________________________________________");
                         Console.WriteLine("");
                         Console.WriteLine("A szörnyet eltaláltad");
                         Console.WriteLine("");
+                        Console.WriteLine("__________________________________________");
 
                         int playerAttack = player_character.item_in_right_hand.Values.Sum();
                         int enemyDefense = enemy.item_in_left_hand.Values.Sum();
@@ -158,21 +274,41 @@ namespace Sulis_console_jatek
                         if (enemy.health <= 0)
                         {
                             return;
-                        }else {
-                            Console.WriteLine($"Enyi hp-ja maradt a szörnynek: {enemy.health}");
                         }
-
+                        else
+                        {
+                            Console.WriteLine($"Enyi hp-ja maradt a szörnynek: {enemy.health}");
+                            Console.WriteLine("__________________________________________");
+                        }
+                        Thread.Sleep(2000);
                         break;
 
                 }
 
 
             }
-            else {
-                Console.WriteLine("");
-                Console.WriteLine("Miss");
-                Console.WriteLine("");
-            
+            else
+            {
+
+                if (monster_or_player == 0)
+                {
+                    Console.Clear();
+                    Console.WriteLine("__________________________________________");
+                    Console.WriteLine("");
+                    Console.WriteLine("A szörny nem talált el");
+                    Console.WriteLine("");
+                    Console.WriteLine("__________________________________________");
+                    Thread.Sleep(2000);
+                    return;
+                } else if (monster_or_player == 1) { 
+                    Console.Clear();
+                    Console.WriteLine("__________________________________________");
+                    Console.WriteLine("");
+                    Console.WriteLine("Találatod Mellément");
+                    Console.WriteLine("");
+                    Console.WriteLine("__________________________________________");
+                    Thread.Sleep(2000);
+                }
             }
 
 
@@ -180,14 +316,16 @@ namespace Sulis_console_jatek
         }
 
 
-        private int who_starts_first() {
-            int first = rnd.Next(1, 3);
+        private int who_starts_first()
+        {
+            int first = rnd.Next(1, 5);
             return first;
         }
 
 
 
-        private void item_change_in_hand(Enemy enemy, Character player_character) {
+        private void item_change_in_hand(Enemy enemy, Character player_character)
+        {
 
             Console.WriteLine($"Ezek a fegyverek vannak a kezedbe : {player_character.get_right_hand()} , {player_character.get_left_hand()}");
             Console.WriteLine($"Ezek vannak az inventoridba: {player_character.get_invetory()}");
@@ -283,20 +421,14 @@ namespace Sulis_console_jatek
                 Console.WriteLine("Sajnos nicsen másik tárgyad amire letudnád cserélni a mostanit :(");
             }
 
-
-
-
-
-
-
         }
 
 
-        private void Bolt_event()
+        private void Bolt_event(Character player_character)
         {
+            Console.Clear();
             Console.WriteLine("");
             Console.WriteLine("Találtál egy boltot: ");
-            Controller controller = new Controller();
             Bolt bolt = new Bolt(2);
             Dictionary<string, int> bolt_items = bolt.get_bolt_random_items();
 
@@ -304,14 +436,46 @@ namespace Sulis_console_jatek
             {
                 Console.WriteLine($"{item.Key} - Védelem: {item.Value}");
             }
-            controller.use_bolt_transaction(bolt_items);
+            bolt.use_bolt_transaction(bolt_items, player_character);
 
 
         }
 
-        private void Randomm_Treasure()
+        private void Randomm_Treasure(Character player_character)
         {
-            Console.WriteLine("treasure event");
+            Console.Clear();
+            Bolt bolt = new Bolt(2);
+            rnd = new Random();
+
+
+            Dictionary<string, int> bolt_items = bolt.get_bolt_random_items();
+
+            var random_wepon = bolt_items.ElementAt(rnd.Next(bolt_items.Count));
+            Console.WriteLine($"Találtál egy tárgyat a földön: {random_wepon.Key} - Védelem/Sebzés: {random_wepon.Value}");
+
+            Console.WriteLine("");
+            Console.WriteLine("");
+            Console.WriteLine("elviszed magaddal? (igen/ nem)");
+            string input = Console.ReadLine();
+
+            while (string.IsNullOrWhiteSpace(input) || (input != "igen" && input != "nem"))
+            {
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine("hibás válasz. Próbáld ujra");
+                input = Console.ReadLine();
+            }
+
+
+            if (input == "igen")
+            {
+                Console.WriteLine("Sikeresen elvitted a tárgyat");
+                player_character.inventory.Add(random_wepon.Key, random_wepon.Value);
+            }
+            else
+            {
+                Console.WriteLine("Nem vittél el semmit");
+            }
         }
     }
 }
