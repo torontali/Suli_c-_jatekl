@@ -163,6 +163,62 @@ namespace Sulis_console_jatek
         {
             bolt_transaction(bolt_items, player_character);
         }
+
+        private void sell_item(Character player_character,string input) {
+
+            if (input == "igen")
+            {
+                Console.WriteLine($"inventoryd: {player_character.get_invetory()}");
+                Console.WriteLine("Mit szeretnél eladni? Add meg a tárgy nevét:");
+                input = Console.ReadLine();
+
+                if (player_character.inventory.ContainsKey(input) == true)
+                {
+                    int sell_price = player_character.inventory[input] / 3;
+                    player_character.gold += sell_price;
+
+                    if (player_character.get_right_hand_for_bolt() == input)
+                    {
+                        player_character.item_in_right_hand.Clear();
+                        player_character.inventory.Remove(input);
+                        Console.WriteLine($"A {input} ki lett véve a kezedből mert eladtad.");
+                    }
+                    else if (player_character.get_left_hand_for_bolt() == input)
+                    {
+                        player_character.item_in_left_hand.Clear();
+                        player_character.inventory.Remove(input);
+                        Console.WriteLine($"A {input} ki lett véve a kezedből mert eladtad.");
+                    }
+
+                    Console.WriteLine($"Sikeresen eladtad a {input}-t. Jutalmad: {sell_price} arany. Összes aranyad: {player_character.gold}");
+
+                    Console.WriteLine("");
+                    Console.WriteLine("");
+                    Console.WriteLine("Szeretnél még tárgyat eladni ? (igen/nem)");
+                    input = Console.ReadLine();
+
+                    if (input == "igen") { 
+                        sell_item(player_character, input);
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        return;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Nincs ilyen tárgy az inventorydban.");
+                    input= "igen";
+                    sell_item(player_character, input);
+                }
+            }
+
+        }
+
+
+
+
         private void bolt_transaction(Dictionary<string, int> bolt_items, Character player_character)
         {
             Console.WriteLine("(ha nem akarsz semmit anyít írj egyiket sem ) Mit szeretnél venni a boltból? Add meg a tárgy nevét:");
@@ -171,6 +227,12 @@ namespace Sulis_console_jatek
 
             if (input == "nem" || input == "egyiket sem"){
                 Console.WriteLine("Nem vettél semmit");
+
+                Console.WriteLine("--------------------------------------");
+                Console.WriteLine("Eladni szeretnél valamit? (igen/nem)");
+                input = Console.ReadLine();
+                sell_item(player_character, input);
+
                 return;
             }
 

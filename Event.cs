@@ -139,7 +139,7 @@ namespace Sulis_console_jatek
                         }
                     }
 
-                    Console.WriteLine($"{player_character.inventory}");
+                    Console.WriteLine($"{player_character.get_invetory()}");
 
                 }
                 else if (random_drop == 2 && enemy.enemy_right_hand() != "")
@@ -327,7 +327,7 @@ namespace Sulis_console_jatek
         private void item_change_in_hand(Enemy enemy, Character player_character)
         {
 
-            Console.WriteLine($"Ezek a fegyverek vannak a kezedbe : {player_character.get_right_hand()} , {player_character.get_left_hand()}");
+            Console.WriteLine($"Ezek a fegyverek vannak a kezedbe : jobb: {player_character.get_right_hand()} , bal: {player_character.get_left_hand()}");
             Console.WriteLine($"Ezek vannak az inventoridba: {player_character.get_invetory()}");
             Console.WriteLine($"Leszeretnéd cserélni valamelyiket? (igen/nem)");
             string input = Console.ReadLine();

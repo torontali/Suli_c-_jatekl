@@ -49,6 +49,27 @@ namespace Sulis_console_jatek
         }
 
 
+        public string get_right_hand_for_bolt() {
+            var invetory_items = "";
+            foreach (var item in item_in_right_hand)
+            {
+                invetory_items += item.Key;
+            }
+            return invetory_items;
+        }
+
+        public string get_left_hand_for_bolt()
+        {
+            var invetory_items = "";
+            foreach (var item in item_in_left_hand)
+            {
+                invetory_items += item.Key;
+            }
+            return invetory_items;
+        }
+
+
+
         public string[] character_types()
         {
             return new string[] { "Katona", "Varázsló", "Béka" };
